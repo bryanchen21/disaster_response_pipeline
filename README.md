@@ -1,16 +1,11 @@
 # Disaster Response Pipeline Project
 
 ### Table of Contents
-1. Installation
-2. Project Motivation
-3. File Descriptions
-4. Results
-5. Author and Acknowledgements
+1. Project Motivation
+2. File Descriptions
+3. Results
+4. Author and Acknowledgements
 
-
-### Installation
-
-There should be no necessary libraries to run the code here beyond the Anaconda distribution of Python. The code should run with no issues using Python versions 3.*.
 
 ### Project Motivation
 
@@ -30,9 +25,9 @@ There should be no necessary libraries to run the code here beyond the Anaconda 
 1. Run the following commands in the project's root directory to set up database and model.
 
     - To run ETL pipeline that cleans data and stores in database
-        `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
+        `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/message_classifier.db.db`
     - To run ML pipeline that trains classifier and saves
-        `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
+        `python models/train_classifier.py data/message_classifier.db.db models/classifier.pkl models/pipeline.pkl`
 
 2. Run the following command in the app's directory to run the web app.
     `python run.py`
@@ -42,10 +37,11 @@ There should be no necessary libraries to run the code here beyond the Anaconda 
 ### Discussion
 1. Because we are dealing with text data and we need to extract the features to do modeling, we first use CountVectorizer and TFIDF transformer to turn each message to a vector of numbers - essentially a score representing how many times a word appears in the message weighted by how common the word appears across all the messages. In each message, the more common a word is across all messages, the lower its score. 
 2. Then, we use the Random Forest Classifier for our prediction. 
-In this multi-label classification problem where we want to predict suitable labels based on messages, in our dataset, the labels are unevenly distributed.
-2. Labels such as 'offer', 'security', 'clothing', 'missing_people', 'electricity', 'tools', 'hospitals', 'shops', 'aid_centers', 'fire', 'cold' are used on around 500 or less messages out of over 26,000 messages. This reduces the effectiveness of our machine learning algorithm when training the model on these minority labels. 
-3. To overcome this data imbalance, we use data augmentation by oversampling these minority labels. We leverage the technique called multi-label synthetic minority over-sampling (MLSMOTE).
-4. Special thanks to this [article](https://medium.com/thecyphy/handling-data-imbalance-in-multi-label-classification-mlsmote-531155416b87) for providing the code to run MLSMOTE. 
+3. In this multi-label classification problem where we want to predict suitable labels based on messages, in our dataset, the labels are unevenly distributed.
+4. Labels such as 'offer', 'security', 'clothing', 'missing_people', 'electricity', 'tools', 'hospitals', 'shops', 'aid_centers', 'fire', 'cold' are used on around 500 or less messages out of over 26,000 messages. This reduces the effectiveness of our machine learning algorithm when training the model on these minority labels. 
+5. To overcome this data imbalance, we use data augmentation by oversampling these minority labels. We leverage the technique called multi-label synthetic minority over-sampling (MLSMOTE).
+6. In our case, GridSearchCV did not return a good model compared to the baseline Random Forest Classifier model with default parameter values, so the baseline model is used.
+7. Special thanks to this [article](https://medium.com/thecyphy/handling-data-imbalance-in-multi-label-classification-mlsmote-531155416b87) for providing the code to run MLSMOTE. 
 
 ### Results
 
